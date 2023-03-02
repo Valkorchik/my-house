@@ -16,19 +16,20 @@ class RoundedButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: Material(
         elevation: 5.0,
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(30.0),
-        child: MaterialButton(
-          onPressed: button,
-          minWidth: 100.0,
-          height: 42.0,
-          child: Text(
-            title!,
-            style: const TextStyle(
-              fontSize: 20,
-              fontFamily: 'Inter',
-              fontWeight: FontWeight.w500,
-              color: Colors.red,
+        color: const Color.fromRGBO(238, 238, 238, 1),
+        borderRadius: BorderRadius.circular(14.0),
+        child: Expanded(
+          child: MaterialButton(
+            minWidth: 179,
+            onPressed: button,
+            child: Text(
+              title!,
+              style: TextStyle(
+                fontSize: 20,
+                fontFamily: 'Inter',
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).primaryColor,
+              ),
             ),
           ),
         ),

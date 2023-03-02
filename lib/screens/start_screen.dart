@@ -1,5 +1,6 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:my_house/screens/components/rounded_button.dart';
+import 'package:my_house/models/components/rounded_button.dart';
 
 class StartPage extends StatelessWidget {
   const StartPage({super.key});
@@ -14,7 +15,7 @@ class StartPage extends StatelessWidget {
               fit: BoxFit.cover),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10),
+          padding: const EdgeInsets.only(left: 15, right: 15),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -26,31 +27,38 @@ class StartPage extends StatelessWidget {
                   height: 150,
                 ),
               ),
-              const Text(
-                'Добрый день!\n\n',
+              Text(
+                'Мой дом\n\n',
                 style: TextStyle(
-                    color: Colors.black,
+                    color: Theme.of(context).primaryColor,
                     fontFamily: 'Inter',
                     fontWeight: FontWeight.bold,
-                    fontSize: 20),
+                    fontSize: 32),
                 textAlign: TextAlign.center,
               ),
-              const Text(
-                'К вашему вниманию предоставляется первый мобильный агрегатор по управлению и покупке недвижимости. ',
-                style: TextStyle(
-                    letterSpacing: 1.5,
-                    color: Colors.black,
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18),
-                textAlign: TextAlign.left,
+              AnimatedTextKit(
+                animatedTexts: [
+                  TypewriterAnimatedText(
+                    'Покупай и управляй.',
+                    textStyle: const TextStyle(
+                        letterSpacing: 1.5,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24),
+                    speed: const Duration(milliseconds: 150),
+                  ),
+                ],
+                repeatForever: true,
+                pause: const Duration(milliseconds: 500),
               ),
               const SizedBox(
-                height: 120,
+                height: 100,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: RoundedButton(title: "Присоединяйтесь!", button: () {}),
+                child: RoundedButton(
+                    title: "Присоединяйтесь!",
+                    button: () => Navigator.pushNamed(context, '/auth')),
               ),
             ],
           ),
