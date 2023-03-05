@@ -13,9 +13,9 @@ class AuthPage extends StatelessWidget {
             image: DecorationImage(
                 image: AssetImage('assets/images/auth_background.png'),
                 fit: BoxFit.cover)),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 150),
-          child: Expanded(
+        child: Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 150),
             child: Center(
               child: Container(
                 width: double.infinity,
