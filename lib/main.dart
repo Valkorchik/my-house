@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:my_house/screens/auth_screen.dart';
-import 'package:my_house/screens/registr_screen.dart';
-import 'package:my_house/screens/sign_in_screen.dart';
-import 'screens/start_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:my_house/presentation/routes/router.gr.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,24 +12,30 @@ void main() {
 }
 
 class App extends StatelessWidget {
+  static final _appRouter = AppRouter();
+
   const App({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const StartPage(),
-        '/auth': (context) => const AuthPage(),
-        '/auth/sign': (context) => const SignInPage(),
-        '/auth/registr': (context) => const RegistrationScreen(),
-      },
-      title: 'Flutter Demo',
+    return MaterialApp.router(
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('ru'),
+      ],
+      locale: const Locale('ru'),
+      debugShowCheckedModeBanner: false,
+      routerDelegate: _appRouter.delegate(),
+      routeInformationParser: _appRouter.defaultRouteParser(),
+      title: 'My House',
       theme: ThemeData(
-        fontFamily: 'Inter',
-        primaryColor: Colors.red,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
-        useMaterial3: true,
+        fontFamily: GoogleFonts.inter().fontFamily,
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.red),
       ),
     );
   }

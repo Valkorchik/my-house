@@ -13,8 +13,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: any
   cupertino_icons: ^1.0.2
   animated_text_kit: ^4.2.2
+  provider: ^6.0.5
+  auto_route: ^5.0.4
+  auto_route_generator: ^5.0.3
+  build_runner: ^2.4.1
+  google_fonts: ^4.0.3
 
 dev_dependencies:
   flutter_test:
@@ -33,16 +41,4 @@ flutter:
   assets:
     - assets/images/
 
-  
-
-  fonts:
-    - family: Inter
-      fonts:
-        - asset: fonts/Inter-Bold.ttf
-          weight: 700
-        - asset: fonts/Inter-Regular.ttf
-          weight: 400
-        - asset: fonts/Inter-Medium.ttf  
-          weight: 500
-   
   

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class RoundedButton extends StatelessWidget {
   final String? title;
@@ -26,9 +27,9 @@ class RoundedButton extends StatelessWidget {
               title!,
               style: TextStyle(
                 fontSize: 20,
-                fontFamily: 'Inter',
+                fontFamily: GoogleFonts.inter().fontFamily,
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
           ),

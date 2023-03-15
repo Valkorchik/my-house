@@ -1,9 +1,11 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:my_house/models/components/rounded_button.dart';
+import 'package:my_house/presentation/routes/router.gr.dart';
 
-class StartPage extends StatelessWidget {
-  const StartPage({super.key});
+class SplashPage extends StatelessWidget {
+  const SplashPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,26 +32,26 @@ class StartPage extends StatelessWidget {
               Text(
                 'Мой дом\n\n',
                 style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontFamily: 'Inter',
+                    color: Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.bold,
                     fontSize: 32),
                 textAlign: TextAlign.center,
               ),
-              AnimatedTextKit(
-                animatedTexts: [
-                  TypewriterAnimatedText(
-                    'Покупай и управляй.',
-                    textStyle: const TextStyle(
-                        letterSpacing: 1.5,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24),
-                    speed: const Duration(milliseconds: 150),
-                  ),
-                ],
-                repeatForever: true,
-                pause: const Duration(milliseconds: 500),
+              Center(
+                child: AnimatedTextKit(
+                  animatedTexts: [
+                    TypewriterAnimatedText(
+                      'Покупай и управляй.',
+                      textStyle: const TextStyle(
+                          letterSpacing: 1.5,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24),
+                      speed: const Duration(milliseconds: 150),
+                    ),
+                  ],
+                  repeatForever: true,
+                  pause: const Duration(milliseconds: 500),
+                ),
               ),
               const SizedBox(
                 height: 100,
@@ -57,8 +59,11 @@ class StartPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: RoundedButton(
-                    title: "Присоединяйтесь!",
-                    button: () => Navigator.pushNamed(context, '/auth')),
+                  title: "Присоединяйтесь!",
+                  button: () => context.router.replace(
+                    const AuthRoute(),
+                  ),
+                ),
               ),
             ],
           ),
