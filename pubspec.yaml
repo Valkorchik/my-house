@@ -23,6 +23,11 @@ dependencies:
   auto_route_generator: ^5.0.3
   build_runner: ^2.4.1
   google_fonts: ^4.0.3
+  dio: ^5.0.2
+  shared_preferences: ^2.0.18
+  flutter_dotenv: ^5.0.2
+  http: ^0.13.5
+
 
 dev_dependencies:
   flutter_test:
@@ -40,5 +45,6 @@ flutter:
 
   assets:
     - assets/images/
+    - .env
 
   
