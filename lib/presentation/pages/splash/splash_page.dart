@@ -1,7 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:my_house/models/components/rounded_button.dart';
+import 'package:my_house/presentation/widgets/rounded_button.dart';
 import 'package:my_house/presentation/routes/router.gr.dart';
 
 class SplashPage extends StatelessWidget {

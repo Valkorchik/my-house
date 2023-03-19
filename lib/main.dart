@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:my_house/domain/repositories/auth_repository.dart';
 import 'package:my_house/presentation/routes/router.gr.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
-
-import 'providers/auth.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
@@ -25,8 +24,8 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(
-          value: Auth(),
+        ChangeNotifierProvider<AuthRepository>.value(
+          value: AuthRepository(),
         ),
       ],
       child: MaterialApp.router(

@@ -1,8 +1,10 @@
 // ignore_for_file: constant_identifier_names
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:my_house/domain/repositories/auth_repository.dart';
+import 'package:my_house/presentation/routes/router.gr.dart';
 import 'package:provider/provider.dart';
-import '../../exceptions/http_exception.dart';
-import '../../providers/auth.dart';
+import '../../../exceptions/http_exception.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -16,6 +18,7 @@ class AuthPage extends StatelessWidget {
     return Scaffold(
         body: Stack(children: [
       Container(
+        //TODO: Add hero animation
         width: deviceSize.width,
         height: deviceSize.height,
         decoration: const BoxDecoration(
@@ -133,16 +136,20 @@ class _AuthCardState extends State<AuthCard>
     try {
       if (_authMode == AuthMode.Login) {
         // Log user in
-        await Provider.of<Auth>(context, listen: false).login(
-          _authData['email']!,
-          _authData['password']!,
-        );
+        await Provider.of<AuthRepository>(context, listen: false)
+            .login(
+              _authData['email']!,
+              _authData['password']!,
+            )
+            .then((_) => context.router.replace(const AdvertsListRoute()));
       } else {
         // Sign user up
-        await Provider.of<Auth>(context, listen: false).signup(
-          _authData['email']!,
-          _authData['password']!,
-        );
+        await Provider.of<AuthRepository>(context, listen: false)
+            .signup(
+              _authData['email']!,
+              _authData['password']!,
+            )
+            .then((_) => context.router.replace(const AdvertsListRoute()));
       }
     } on HttpException catch (error) {
       var errorMessage = 'Аутентификация не удалась.';
