@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../exceptions/http_exception.dart';
 
-class AuthRepository with ChangeNotifier {
+class AuthRepository {
   String? _token;
   DateTime? _expiryDate;
   String? _userId;
@@ -57,7 +56,6 @@ class AuthRepository with ChangeNotifier {
         ),
       );
       _autoLogout();
-      notifyListeners();
       final prefs = await SharedPreferences.getInstance();
       final userData = json.encode(
         {
@@ -76,7 +74,7 @@ class AuthRepository with ChangeNotifier {
     return authenticate(email, password, 'signInWithPassword');
   }
 
-  Future<void> signup(String email, String password) async {
+  Future<void> signup(String email, String password, String username) async {
     return authenticate(email, password, 'signUp');
   }
 
@@ -96,7 +94,6 @@ class AuthRepository with ChangeNotifier {
     _userId = extractedUserData['userId'];
     _expiryDate = expiryDate;
     _autoLogout();
-    notifyListeners();
     return true;
   }
 
@@ -109,7 +106,7 @@ class AuthRepository with ChangeNotifier {
       _authTimer = null;
     }
     final prefs = await SharedPreferences.getInstance();
-    notifyListeners();
+
     prefs.clear();
   }
 

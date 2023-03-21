@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_house/domain/repositories/auth_repository.dart';
+import 'package:my_house/presentation/bloc/cubit/auth_cubit.dart';
+import 'package:my_house/presentation/bloc/cubit/blocs_observer.dart';
 import 'package:my_house/presentation/routes/router.gr.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:provider/provider.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
+  Bloc.observer = BlocsObserver();
 
   runApp(const App());
 }
@@ -28,19 +32,14 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<AuthRepository>.value(
-          value: AuthRepository(),
-        ),
-      ],
+    return BlocProvider(
+      create: (context) => AuthCubit(AuthRepository()),
       child: FutureBuilder(
           future: _autoLogin(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
             }
-
             return MaterialApp.router(
               localizationsDelegates: const [
                 GlobalMaterialLocalizations.delegate,

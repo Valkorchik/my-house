@@ -1,10 +1,9 @@
 // ignore_for_file: constant_identifier_names
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:my_house/domain/repositories/auth_repository.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_house/presentation/routes/router.gr.dart';
-import 'package:provider/provider.dart';
-import '../../../exceptions/http_exception.dart';
+import '../../bloc/cubit/auth_cubit.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -68,8 +67,8 @@ class _AuthCardState extends State<AuthCard>
   final Map<String, String> _authData = {
     'email': '',
     'password': '',
+    'username': '',
   };
-  bool _isLoading = false;
   final _passwordController = TextEditingController();
   AnimationController? _controller;
   Animation<Offset>? _slideAnimation;
@@ -130,50 +129,17 @@ class _AuthCardState extends State<AuthCard>
       return;
     }
     _formKey.currentState!.save();
-    setState(() {
-      _isLoading = true;
-    });
-    try {
-      if (_authMode == AuthMode.Login) {
-        // Log user in
-        await Provider.of<AuthRepository>(context, listen: false)
-            .login(
-              _authData['email']!,
-              _authData['password']!,
-            )
-            .then((_) => context.router.replace(const AdvertsListRoute()));
-      } else {
-        // Sign user up
-        await Provider.of<AuthRepository>(context, listen: false)
-            .signup(
-              _authData['email']!,
-              _authData['password']!,
-            )
-            .then((_) => context.router.replace(const AdvertsListRoute()));
-      }
-    } on HttpException catch (error) {
-      var errorMessage = 'Аутентификация не удалась.';
-      if (error.toString().contains('EMAIL_EXISTS')) {
-        errorMessage = 'Эта электронная почта уже используется.';
-      } else if (error.toString().contains('INVALID_EMAIL')) {
-        errorMessage = 'Электронная почта не подходит.';
-      } else if (error.toString().contains('WEAK_PASSWORD')) {
-        errorMessage = 'Пароль слишком слабый.';
-      } else if (error.toString().contains('EMAIL_NOT_FOUND')) {
-        errorMessage = 'Невозможно найти пользователя с такой почтой.';
-      } else if (error.toString().contains('INVALID_PASSWORD')) {
-        errorMessage = 'Неверный пароль.';
-      }
-      _showErrorDialog(errorMessage);
-    } catch (error) {
-      const errorMessage =
-          'Не получается аутентифицировать Вас. Пожалуйста, попробуйте позже.';
-      _showErrorDialog(errorMessage);
+    if (_authMode == AuthMode.Login) {
+      // Log user in
+      await BlocProvider.of<AuthCubit>(context, listen: false).login(
+        _authData['email']!,
+        _authData['password']!,
+      );
+    } else {
+      // Sign user up
+      await BlocProvider.of<AuthCubit>(context, listen: false).signup(
+          _authData['email']!, _authData['password']!, _authData['username']!);
     }
-
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   void _switchAuthMode() {
@@ -202,109 +168,149 @@ class _AuthCardState extends State<AuthCard>
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeIn,
         height: _authMode == AuthMode.Signup ? 320 : 260,
-        // height: _heightAnimation.value.height,
         constraints:
             BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 260),
         width: deviceSize.width * 0.75,
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Email'),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value!.isEmpty || !value.contains('@')) {
-                      return 'Неверный email!';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    _authData['email'] = value!;
-                  },
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Пароль'),
-                  obscureText: true,
-                  controller: _passwordController,
-                  validator: (value) {
-                    if (value!.isEmpty || value.length < 5) {
-                      return 'Пароль слишком короткий!';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    _authData['password'] = value!;
-                  },
-                ),
-                AnimatedContainer(
-                  constraints: BoxConstraints(
-                    minHeight: _authMode == AuthMode.Signup ? 60 : 0,
-                    maxHeight: _authMode == AuthMode.Signup ? 120 : 0,
-                  ),
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeIn,
-                  child: FadeTransition(
-                    opacity: _opacityAnimation!,
-                    child: SlideTransition(
-                      position: _slideAnimation!,
-                      child: TextFormField(
-                        enabled: _authMode == AuthMode.Signup,
-                        decoration: const InputDecoration(
-                            labelText: 'Подтверждения пароля'),
-                        obscureText: true,
-                        validator: _authMode == AuthMode.Signup
-                            ? (value) {
-                                if (value != _passwordController.text) {
-                                  return 'Пароли не совпадают!';
-                                }
-                                return null;
-                              }
-                            : null,
+        child: BlocConsumer<AuthCubit, AuthState>(
+          listener: (context, state) {
+            if (state is AuthError) _showErrorDialog(state.errorMessage);
+          },
+          builder: (context, state) {
+            if (state is AuthDone) {
+              context.router.replace(const AdvertsListRoute());
+            }
+            return Form(
+              key: _formKey,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    AnimatedContainer(
+                      constraints: BoxConstraints(
+                        minHeight: _authMode == AuthMode.Signup ? 60 : 0,
+                        maxHeight: _authMode == AuthMode.Signup ? 120 : 0,
+                      ),
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeIn,
+                      child: FadeTransition(
+                        opacity: _opacityAnimation!,
+                        child: SlideTransition(
+                          position: _slideAnimation!,
+                          child: TextFormField(
+                            enabled: _authMode == AuthMode.Signup,
+                            decoration: const InputDecoration(
+                                labelText: 'Имя пользователя'),
+                            validator: _authMode == AuthMode.Signup
+                                ? (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Введите имя!';
+                                    }
+                                    return null;
+                                  }
+                                : null,
+                            onSaved: (value) {
+                              _authData['username'] = value!;
+                            },
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                if (_isLoading)
-                  const CircularProgressIndicator()
-                else
-                  ElevatedButton(
-                    onPressed: _submit,
-                    style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 30.0, vertical: 8.0)),
-                    child: Text(
-                      _authMode == AuthMode.Login ? 'Войти' : 'Регистрация',
-                      style: const TextStyle(color: Colors.white),
+                    TextFormField(
+                      decoration: const InputDecoration(labelText: 'Email'),
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (value) {
+                        if (value!.isEmpty || !value.contains('@')) {
+                          return 'Неверный email!';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _authData['email'] = value!;
+                      },
                     ),
-                  ),
-                TextButton(
-                  onPressed: _switchAuthMode,
-                  style: TextButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30.0, vertical: 4),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                  child: Text(
-                    _authMode == AuthMode.Login
-                        ? 'Создать аккаунт'
-                        : 'У меня уже есть аккаунт',
-                    style:
-                        TextStyle(color: Theme.of(context).colorScheme.primary),
-                  ),
+                    TextFormField(
+                      decoration: const InputDecoration(labelText: 'Пароль'),
+                      obscureText: true,
+                      controller: _passwordController,
+                      validator: (value) {
+                        if (value!.isEmpty || value.length < 5) {
+                          return 'Пароль слишком короткий!';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _authData['password'] = value!;
+                      },
+                    ),
+                    AnimatedContainer(
+                      constraints: BoxConstraints(
+                        minHeight: _authMode == AuthMode.Signup ? 60 : 0,
+                        maxHeight: _authMode == AuthMode.Signup ? 120 : 0,
+                      ),
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeIn,
+                      child: FadeTransition(
+                        opacity: _opacityAnimation!,
+                        child: SlideTransition(
+                          position: _slideAnimation!,
+                          child: TextFormField(
+                            enabled: _authMode == AuthMode.Signup,
+                            decoration: const InputDecoration(
+                                labelText: 'Подтверждения пароля'),
+                            obscureText: true,
+                            validator: _authMode == AuthMode.Signup
+                                ? (value) {
+                                    if (value != _passwordController.text) {
+                                      return 'Пароли не совпадают!';
+                                    }
+                                    return null;
+                                  }
+                                : null,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    if (state is AuthLoading)
+                      const CircularProgressIndicator()
+                    else
+                      ElevatedButton(
+                        onPressed: _submit,
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 30.0, vertical: 8.0)),
+                        child: Text(
+                          _authMode == AuthMode.Login ? 'Войти' : 'Регистрация',
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    TextButton(
+                      onPressed: _switchAuthMode,
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 30.0, vertical: 4),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      child: Text(
+                        _authMode == AuthMode.Login
+                            ? 'Создать аккаунт'
+                            : 'У меня уже есть аккаунт',
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ),
     );
