@@ -1,19 +1,24 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:my_house/domain/repositories/auth_repository.dart';
+import '../../../domain/repositories/auth_repository.dart';
 import '../../../exceptions/http_exception.dart';
 
+part 'auth_event.dart';
 part 'auth_state.dart';
 
-class AuthCubit extends Cubit<AuthState> {
+class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository _authRepository;
 
-  AuthCubit(this._authRepository) : super(const AuthInitial());
+  AuthBloc(this._authRepository) : super(const AuthInitial()) {
+    on<SignupEvent>(_onSignup);
+    on<LoginEvent>(_onLogin);
+    on<LogoutEvent>(_onLogout);
+  }
 
-  Future<void> signup(String email, String password, String username) async {
+  _onSignup(event, emit) async {
     emit(const AuthLoading());
     try {
-      await _authRepository.signup(email, password, username);
+      await _authRepository.signup(event.email, event.password, event.username);
       emit(const AuthDone());
     } on HttpException catch (error) {
       var errorMessage = 'Аутентификация не удалась.';
@@ -34,10 +39,10 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> login(String email, String password) async {
+  _onLogin(event, emit) async {
     emit(const AuthLoading());
     try {
-      await _authRepository.login(email, password);
+      await _authRepository.login(event.email, event.password);
       emit(const AuthDone());
     } on HttpException catch (error) {
       var errorMessage = 'Аутентификация не удалась.';
@@ -56,7 +61,7 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> logout() async {
+  _onLogout(event, emit) async {
     emit(const AuthLoading());
     await _authRepository.logout();
     emit(const AuthLogout());

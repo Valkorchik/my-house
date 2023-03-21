@@ -3,7 +3,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_house/presentation/routes/router.gr.dart';
-import '../../bloc/cubit/auth_cubit.dart';
+
+import '../../bloc/auth/auth_bloc.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -124,21 +125,21 @@ class _AuthCardState extends State<AuthCard>
     );
   }
 
-  Future<void> _submit() async {
+  void _submit() {
     if (!_formKey.currentState!.validate()) {
       return;
     }
     _formKey.currentState!.save();
     if (_authMode == AuthMode.Login) {
       // Log user in
-      await BlocProvider.of<AuthCubit>(context, listen: false).login(
+      BlocProvider.of<AuthBloc>(context, listen: false).add(LoginEvent(
         _authData['email']!,
         _authData['password']!,
-      );
+      ));
     } else {
       // Sign user up
-      await BlocProvider.of<AuthCubit>(context, listen: false).signup(
-          _authData['email']!, _authData['password']!, _authData['username']!);
+      BlocProvider.of<AuthBloc>(context, listen: false).add(SignupEvent(
+          _authData['email']!, _authData['password']!, _authData['username']!));
     }
   }
 
@@ -172,7 +173,7 @@ class _AuthCardState extends State<AuthCard>
             BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 260),
         width: deviceSize.width * 0.75,
         padding: const EdgeInsets.all(16.0),
-        child: BlocConsumer<AuthCubit, AuthState>(
+        child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthError) _showErrorDialog(state.errorMessage);
           },

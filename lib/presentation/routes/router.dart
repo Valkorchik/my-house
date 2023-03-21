@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:my_house/presentation/pages/auth/auth_page.dart';
 import 'package:my_house/presentation/pages/ad_list/adverts_list_page.dart';
-import '../pages/auth/auth_page.dart';
 import '../pages/splash/splash_page.dart';
 
 @MaterialAutoRouter(

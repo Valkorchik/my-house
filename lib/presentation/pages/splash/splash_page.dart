@@ -10,6 +10,7 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //TODO: Починить верстку
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(

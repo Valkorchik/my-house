@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_house/presentation/bloc/cubit/auth_cubit.dart';
+import 'package:my_house/presentation/bloc/auth/auth_bloc.dart';
 import 'package:my_house/presentation/routes/router.gr.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -16,7 +16,9 @@ class AppDrawer extends StatelessWidget {
           ),
           body: ElevatedButton(
               onPressed: () {
-                BlocProvider.of<AuthCubit>(context, listen: false).logout();
+                BlocProvider.of<AuthBloc>(context, listen: false)
+                    .add(const LogoutEvent());
+                context.router.replace(const SplashRoute());
               },
               child: const Text('log out'))),
     );
