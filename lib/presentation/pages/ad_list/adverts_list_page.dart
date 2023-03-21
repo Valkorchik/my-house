@@ -10,7 +10,12 @@ class AdvertsListPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Мой дом'),
-        actions: const [Icon(Icons.verified_user)],
+        actions: const [
+          Padding(
+            padding: EdgeInsets.all(15.0),
+            child: Icon(Icons.person),
+          )
+        ],
       ),
       drawer: const AppDrawer(),
       body: ListView.builder(
