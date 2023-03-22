@@ -10,7 +10,6 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //TODO: Починить верстку
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -25,9 +24,12 @@ class SplashPage extends StatelessWidget {
             children: [
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
-                child: Image(
-                  image: AssetImage("assets/images/house.png"),
-                  height: 150,
+                child: Hero(
+                  tag: 'imageHero',
+                  child: Image(
+                    image: AssetImage("assets/images/house.png"),
+                    height: 150,
+                  ),
                 ),
               ),
               Text(
@@ -61,7 +63,7 @@ class SplashPage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: RoundedButton(
                   title: "Присоединяйтесь!",
-                  button: () => context.router.replace(
+                  button: () => context.router.push(
                     const AuthRoute(),
                   ),
                 ),

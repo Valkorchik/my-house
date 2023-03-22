@@ -36,9 +36,12 @@ class AuthPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              const Image(
-                image: AssetImage('assets/images/house.png'),
-                height: 150,
+              const Hero(
+                tag: 'imageHero',
+                child: Image(
+                  image: AssetImage('assets/images/house.png'),
+                  height: 150,
+                ),
               ),
               Flexible(
                 flex: deviceSize.width > 600 ? 2 : 1,
@@ -168,9 +171,9 @@ class _AuthCardState extends State<AuthCard>
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeIn,
-        height: _authMode == AuthMode.Signup ? 320 : 260,
+        height: _authMode == AuthMode.Signup ? 370 : 260,
         constraints:
-            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 260),
+            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 370 : 260),
         width: deviceSize.width * 0.75,
         padding: const EdgeInsets.all(16.0),
         child: BlocConsumer<AuthBloc, AuthState>(
@@ -179,7 +182,7 @@ class _AuthCardState extends State<AuthCard>
           },
           builder: (context, state) {
             if (state is AuthDone) {
-              context.router.replace(const AdvertsListRoute());
+              context.router.replaceAll([const AdvertsListRoute()]);
             }
             return Form(
               key: _formKey,
