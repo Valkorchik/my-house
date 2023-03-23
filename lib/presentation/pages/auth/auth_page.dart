@@ -18,7 +18,6 @@ class AuthPage extends StatelessWidget {
     return Scaffold(
         body: Stack(children: [
       Container(
-        //TODO: Add hero animation
         width: deviceSize.width,
         height: deviceSize.height,
         decoration: const BoxDecoration(

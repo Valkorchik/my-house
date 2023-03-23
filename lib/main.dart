@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:my_house/domain/entities/estate.dart';
 import 'package:my_house/domain/repositories/auth_repository.dart';
 import 'package:my_house/presentation/bloc/auth/auth_bloc.dart';
+import 'package:my_house/presentation/bloc/estate/estate_bloc.dart';
 import 'package:my_house/presentation/routes/router.gr.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -35,8 +37,17 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: BlocProvider(
-        create: (context) => AuthBloc(AuthRepository()),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => AuthBloc(AuthRepository()),
+          ),
+          BlocProvider(
+            create: (context) => EstateBloc(
+              EstateList(),
+            ),
+          ),
+        ],
         child: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthLogout) {

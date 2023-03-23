@@ -1,7 +1,21 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:my_house/presentation/routes/router.gr.dart';
 
 class AdvertsListItem extends StatelessWidget {
-  const AdvertsListItem({super.key});
+  final String id;
+  final String name;
+  final String size;
+  final String price;
+  final String town;
+  const AdvertsListItem({
+    super.key,
+    required this.name,
+    required this.town,
+    required this.size,
+    required this.price,
+    required this.id,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,15 +29,46 @@ class AdvertsListItem extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: GestureDetector(
-            child: const Image(
-              image: NetworkImage(
-                  'https://i.pinimg.com/originals/af/f2/a0/aff2a08c328c7eca482777caa7bab95d.jpg'),
+            onTap: () {
+              context.router.push(AdvertItemDetails(itemId: id));
+            },
+            child: Hero(
+              tag: id,
+              child: const FadeInImage(
+                placeholder: AssetImage('assets/images/image-placeholder.png'),
+                image: NetworkImage(
+                    'https://i.pinimg.com/originals/af/f2/a0/aff2a08c328c7eca482777caa7bab95d.jpg'),
+              ),
             ),
           ),
         ),
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [Text("AdTitle"), Text("AdCategories"), Text('Info')],
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(
+                name,
+                style:
+                    const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+              ),
+              Text(
+                '$sizeм2',
+                style:
+                    const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+              ),
+              Text(
+                '$price млн. руб.',
+                style:
+                    const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+              ),
+              Text(
+                town,
+                style:
+                    const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
         ),
       ]),
     );

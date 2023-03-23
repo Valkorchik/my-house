@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_house/presentation/pages/ad_list/adverts_list_item.dart';
 import 'package:my_house/presentation/widgets/app_drawer.dart';
+import '../../bloc/estate/estate_bloc.dart';
 
 class AdvertsListPage extends StatelessWidget {
   const AdvertsListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final estate = context.read<EstateBloc>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Мой дом'),
@@ -18,9 +21,25 @@ class AdvertsListPage extends StatelessWidget {
         ],
       ),
       drawer: const AppDrawer(),
-      body: ListView.builder(
-        itemBuilder: (ctx, index) => const AdvertsListItem(),
-        itemCount: 10,
+      body: BlocBuilder<EstateBloc, EstateState>(
+        builder: (context, state) {
+          estate.add(GetEstatesEvent());
+          if (state is EstateLoaded) {
+            return ListView.builder(
+              itemBuilder: (ctx, index) {
+                return AdvertsListItem(
+                  id: estate.estateList.items[index].id,
+                  name: estate.estateList.items[index].name,
+                  price: estate.estateList.items[index].price,
+                  size: estate.estateList.items[index].size,
+                  town: estate.estateList.items[index].town,
+                );
+              },
+              itemCount: estate.estateList.items.length,
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
       ),
     );
   }

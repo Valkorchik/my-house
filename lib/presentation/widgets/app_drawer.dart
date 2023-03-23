@@ -14,13 +14,51 @@ class AppDrawer extends StatelessWidget {
           appBar: AppBar(
             title: const Text('Hello user!'),
           ),
-          body: ElevatedButton(
-              onPressed: () {
-                BlocProvider.of<AuthBloc>(context, listen: false)
-                    .add(const LogoutEvent());
-                context.router.replace(const SplashRoute());
-              },
-              child: const Text('log out'))),
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextButton(
+                  onPressed: () {},
+                  child: const Text(
+                    'Объявления',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )),
+              Divider(
+                color: Colors.grey.shade500,
+              ),
+              TextButton(
+                  onPressed: () {},
+                  child: const Text(
+                    'Моя недвижимость',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )),
+              Divider(
+                color: Colors.grey.shade500,
+              ),
+              TextButton(
+                  onPressed: () {},
+                  child: const Text(
+                    'FAQ',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )),
+              Divider(
+                color: Colors.grey.shade500,
+              ),
+              TextButton(
+                  onPressed: () {
+                    BlocProvider.of<AuthBloc>(context, listen: false)
+                        .add(const LogoutEvent());
+                    context.router.replace(const SplashRoute());
+                  },
+                  child: const Text(
+                    'Выйти',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )),
+              Divider(
+                color: Colors.grey.shade500,
+              ),
+            ],
+          )),
     );
   }
 }
