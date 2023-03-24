@@ -301,14 +301,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  foldable_list:
-    dependency: "direct main"
-    description:
-      name: foldable_list
-      sha256: "9bfa06de221fd9b7857fe5ec3cf91de25206f19674c1a281e269955d0e53f42b"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.1"
   frontend_server_client:
     dependency: transitive
     description:
@@ -433,10 +425,10 @@ packages:
     dependency: transitive
     description:
       name: meta
-      sha256: "12307e7f0605ce3da64cf0db90e5fcab0869f3ca03f76be6bb2991ce0a55e82b"
+      sha256: "3c74dbf8763d36539f114c799d8a2d87343b5067e9d796ca22b5eb8437090ee3"
       url: "https://pub.dev"
     source: hosted
-    version: "1.9.0"
+    version: "1.9.1"
   mime:
     dependency: transitive
     description:
