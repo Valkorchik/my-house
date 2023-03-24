@@ -3,9 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_house/domain/entities/estate.dart';
+import 'package:my_house/domain/entities/question.dart';
 import 'package:my_house/domain/repositories/auth_repository.dart';
 import 'package:my_house/presentation/bloc/auth/auth_bloc.dart';
 import 'package:my_house/presentation/bloc/estate/estate_bloc.dart';
+import 'package:my_house/presentation/bloc/faq/faq_bloc.dart';
 import 'package:my_house/presentation/routes/router.gr.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -47,6 +49,7 @@ class _AppState extends State<App> {
               EstateList(),
             ),
           ),
+          BlocProvider(create: (context) => FaqBloc(QuestionList()))
         ],
         child: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {

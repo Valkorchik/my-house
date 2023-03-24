@@ -301,6 +301,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  foldable_list:
+    dependency: "direct main"
+    description:
+      name: foldable_list
+      sha256: "9bfa06de221fd9b7857fe5ec3cf91de25206f19674c1a281e269955d0e53f42b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   frontend_server_client:
     dependency: transitive
     description:

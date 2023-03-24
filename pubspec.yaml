@@ -30,7 +30,7 @@ dependencies:
   equatable: ^2.0.5
   flutter_bloc: ^8.1.2
   bloc: ^8.1.1
-
+  foldable_list: ^1.0.1
 
 dev_dependencies:
   flutter_test:

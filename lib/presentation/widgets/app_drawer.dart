@@ -18,7 +18,9 @@ class AppDrawer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.router.replace(const AdvertsListRoute());
+                  },
                   child: const Text(
                     'Объявления',
                     style: TextStyle(fontWeight: FontWeight.bold),
@@ -36,7 +38,9 @@ class AppDrawer extends StatelessWidget {
                 color: Colors.grey.shade500,
               ),
               TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.router.replace(const FaqRoute());
+                  },
                   child: const Text(
                     'FAQ',
                     style: TextStyle(fontWeight: FontWeight.bold),
