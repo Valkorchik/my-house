@@ -12,7 +12,7 @@ class AppDrawer extends StatelessWidget {
     return Drawer(
       child: Scaffold(
           appBar: AppBar(
-            title: const Text('Hello user!'),
+            title: const Text('Мой дом'),
           ),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -25,6 +25,9 @@ class AppDrawer extends StatelessWidget {
                     'Объявления',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )),
+              const SizedBox(
+                height: 6,
+              ),
               Divider(
                 color: Colors.grey.shade500,
               ),
@@ -34,6 +37,9 @@ class AppDrawer extends StatelessWidget {
                     'Моя недвижимость',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )),
+              const SizedBox(
+                height: 10,
+              ),
               Divider(
                 color: Colors.grey.shade500,
               ),
@@ -45,6 +51,9 @@ class AppDrawer extends StatelessWidget {
                     'FAQ',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )),
+              const SizedBox(
+                height: 10,
+              ),
               Divider(
                 color: Colors.grey.shade500,
               ),
@@ -58,9 +67,6 @@ class AppDrawer extends StatelessWidget {
                     'Выйти',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )),
-              Divider(
-                color: Colors.grey.shade500,
-              ),
             ],
           )),
     );

@@ -103,7 +103,7 @@ class _AppState extends State<App> {
                   routeInformationParser: App._appRouter.defaultRouteParser(),
                   title: 'My House',
                   theme: ThemeData(
-                    textTheme: GoogleFonts.interTextTheme(),
+                    textTheme: GoogleFonts.nunitoTextTheme(),
                     colorScheme:
                         ColorScheme.fromSwatch(primarySwatch: Colors.red),
                   ),

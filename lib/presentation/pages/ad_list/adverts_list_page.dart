@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_house/presentation/pages/ad_list/adverts_list_item.dart';
+import 'package:my_house/presentation/routes/router.gr.dart';
 import 'package:my_house/presentation/widgets/app_drawer.dart';
 import '../../bloc/estate/estate_bloc.dart';
 
@@ -12,11 +14,14 @@ class AdvertsListPage extends StatelessWidget {
     final estate = context.read<EstateBloc>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Мой дом'),
-        actions: const [
+        title: const Text('Объявления'),
+        actions: [
           Padding(
-            padding: EdgeInsets.all(15.0),
-            child: Icon(Icons.person),
+            padding: const EdgeInsets.all(15.0),
+            child: IconButton(
+              icon: const Icon(Icons.person),
+              onPressed: () => context.router.replace(const UserRoute()),
+            ),
           )
         ],
       ),

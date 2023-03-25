@@ -1,4 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import '../../routes/router.gr.dart';
 import '../../widgets/app_drawer.dart';
 
 class FaqPage extends StatefulWidget {
@@ -17,10 +19,13 @@ class _FaqPageState extends State<FaqPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('FAQ'),
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.all(15.0),
-            child: Icon(Icons.person),
+            padding: const EdgeInsets.all(15.0),
+            child: IconButton(
+              icon: const Icon(Icons.person),
+              onPressed: () => context.router.replace(const UserRoute()),
+            ),
           )
         ],
       ),
@@ -104,7 +109,7 @@ class _FaqPageState extends State<FaqPage> {
           ),
           AnimatedContainer(
             duration: const Duration(milliseconds: 3),
-            height: expandedRieltor ? 300 : 80,
+            height: expandedRieltor ? 310 : 80,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -117,29 +122,29 @@ class _FaqPageState extends State<FaqPage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Для риелторов',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w500),
-                        ),
-                        IconButton(
-                          icon: Icon(expandedRieltor ? Icons.close : Icons.add),
-                          onPressed: () {
-                            setState(() {
-                              expandedRieltor = !expandedRieltor;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Для риелторов',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w500),
+                          ),
+                          IconButton(
+                            icon:
+                                Icon(expandedRieltor ? Icons.close : Icons.add),
+                            onPressed: () {
+                              setState(() {
+                                expandedRieltor = !expandedRieltor;
+                              });
+                            },
+                          ),
+                        ]),
                   ),
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 3),
                     padding:
                         const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-                    height: expandedRieltor ? 202 : 0,
+                    height: expandedRieltor ? 223 : 0,
                     child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
