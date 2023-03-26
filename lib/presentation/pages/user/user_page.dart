@@ -17,56 +17,20 @@ class UserPage extends StatefulWidget {
   State<UserPage> createState() => _UserPageState();
 }
 
-class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
-  final GlobalKey<FormState> _formKey = GlobalKey();
+class _UserPageState extends State<UserPage> {
+  final GlobalKey<FormState> _formUserKey = GlobalKey();
   ChangeMode _changeMode = ChangeMode.None;
-  Animation<Offset>? _slideAnimation;
-  Animation<double>? _opacityAnimation;
-  AnimationController? _controller;
 
   final Map<String, String> _userData = {
     'password': '',
     'username': '',
   };
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(
-        milliseconds: 300,
-      ),
-    );
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, -1.5),
-      end: const Offset(0, 0),
-    ).animate(
-      CurvedAnimation(
-        parent: _controller!,
-        curve: Curves.fastOutSlowIn,
-      ),
-    );
-    _opacityAnimation = Tween(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _controller!,
-        curve: Curves.easeIn,
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller!.dispose();
-    super.dispose();
-  }
-
   void _submit() {
-    //TODO: Подключить сабмит
-    if (!_formKey.currentState!.validate()) {
+    if (!_formUserKey.currentState!.validate()) {
       return;
     }
-    _formKey.currentState!.save();
+    _formUserKey.currentState!.save();
     if (_changeMode == ChangeMode.Username) {
       // Save new username
     } else {
@@ -95,7 +59,7 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
                     shape: BoxShape.circle,
                     image: DecorationImage(
                         image: NetworkImage(
-                          'https://cdn1.iconfinder.com/data/icons/business-users/512/circle-1024.png',
+                          'https://banner2.cleanpng.com/20180823/owi/kisspng-computer-icons-user-vector-graphics-portable-netwo-male-user-svg-png-icon-free-download-34728-on-5b7f4c547b5841.6360734715350692685052.jpg',
                         ),
                         fit: BoxFit.fill),
                   ),
@@ -117,118 +81,70 @@ class _UserPageState extends State<UserPage> with TickerProviderStateMixin {
                 const SizedBox(
                   height: 25,
                 ),
+                Form(
+                  key: _formUserKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        decoration: const InputDecoration(
+                            labelText: 'Имя пользователя'),
+                        validator: _changeMode == ChangeMode.Username
+                            ? (value) {
+                                if (value!.isEmpty) {
+                                  return 'Введите имя!';
+                                }
+                                return null;
+                              }
+                            : null,
+                        onSaved: (value) {
+                          _userData['username'] = value!;
+                        },
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(labelText: 'Пароль'),
+                        validator: _changeMode == ChangeMode.Password
+                            ? (value) {
+                                if (value!.isEmpty || value.length < 5) {
+                                  return 'Пароль слишком короткий!';
+                                }
+                                return null;
+                              }
+                            : null,
+                        onSaved: (value) {
+                          _userData['password'] = value!;
+                        },
+                      ),
+                    ],
+                  ),
+                ),
                 TextButton(
                     onPressed: () {
                       setState(() {
                         _changeMode = ChangeMode.Username;
-                        _controller!.forward();
+                        _submit();
                       });
                     },
                     child: const Text(
                       'Сменить имя пользователя',
                       style: TextStyle(fontSize: 16),
                     )),
-                Form(
-                  key: _formKey,
-                  child: SingleChildScrollView(
-                    child: Column(children: <Widget>[
-                      AnimatedContainer(
-                        constraints: BoxConstraints(
-                          minHeight:
-                              _changeMode == ChangeMode.Username ? 60 : 0,
-                          maxHeight:
-                              _changeMode == ChangeMode.Username ? 120 : 0,
-                        ),
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeIn,
-                        child: FadeTransition(
-                          opacity: _opacityAnimation!,
-                          child: SlideTransition(
-                            position: _slideAnimation!,
-                            child: TextFormField(
-                              enabled: _changeMode == ChangeMode.Username,
-                              decoration: const InputDecoration(
-                                  labelText: 'Имя пользователя'),
-                              validator: _changeMode == ChangeMode.Username
-                                  ? (value) {
-                                      if (value!.isEmpty) {
-                                        return 'Введите имя!';
-                                      }
-                                      return null;
-                                    }
-                                  : null,
-                              onSaved: (value) {
-                                _userData['username'] = value!;
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      TextButton(
-                          onPressed: () {
-                            setState(() {
-                              _changeMode = ChangeMode.Password;
-                              _controller!.forward();
-                            });
-                          },
-                          child: const Text(
-                            'Сменить пароль',
-                            style: TextStyle(fontSize: 16),
-                          )),
-                      Form(
-                        key: _formKey,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: <Widget>[
-                              AnimatedContainer(
-                                constraints: BoxConstraints(
-                                  minHeight: _changeMode == ChangeMode.Password
-                                      ? 60
-                                      : 0,
-                                  maxHeight: _changeMode == ChangeMode.Password
-                                      ? 120
-                                      : 0,
-                                ),
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeIn,
-                                child: FadeTransition(
-                                  opacity: _opacityAnimation!,
-                                  child: SlideTransition(
-                                    position: _slideAnimation!,
-                                    child: TextFormField(
-                                      enabled:
-                                          _changeMode == ChangeMode.Password,
-                                      decoration: const InputDecoration(
-                                          labelText: 'Пароль'),
-                                      validator:
-                                          _changeMode == ChangeMode.Password
-                                              ? (value) {
-                                                  if (value!.isEmpty) {
-                                                    return 'Введите имя!';
-                                                  }
-                                                  return null;
-                                                }
-                                              : null,
-                                      onSaved: (value) {
-                                        _userData['password'] = value!;
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              TextButton(
-                                  onPressed: () {},
-                                  child: const Text(
-                                    'Выйти',
-                                    style: TextStyle(fontSize: 16),
-                                  )),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ]),
-                  ),
-                ),
+                TextButton(
+                    onPressed: () {
+                      setState(() {
+                        _changeMode = ChangeMode.Password;
+                        _submit();
+                      });
+                    },
+                    child: const Text(
+                      'Сменить пароль',
+                      style: TextStyle(fontSize: 16),
+                    )),
+                TextButton(
+                    onPressed: () {},
+                    child: const Text(
+                      'Выйти',
+                      style: TextStyle(fontSize: 16),
+                    )),
               ],
             ),
           ),
