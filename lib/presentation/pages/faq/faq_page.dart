@@ -34,7 +34,7 @@ class _FaqPageState extends State<FaqPage> {
         child: Column(children: [
           AnimatedContainer(
             duration: const Duration(milliseconds: 10),
-            height: expandedEstate ? 300 : 80,
+            height: expandedEstate ? 340 : 80,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -69,7 +69,7 @@ class _FaqPageState extends State<FaqPage> {
                     duration: const Duration(milliseconds: 2),
                     padding:
                         const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-                    height: expandedEstate ? 202 : 0,
+                    height: expandedEstate ? 241 : 0,
                     child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,7 +109,7 @@ class _FaqPageState extends State<FaqPage> {
           ),
           AnimatedContainer(
             duration: const Duration(milliseconds: 3),
-            height: expandedRieltor ? 310 : 80,
+            height: expandedRieltor ? 340 : 80,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -144,7 +144,7 @@ class _FaqPageState extends State<FaqPage> {
                     duration: const Duration(milliseconds: 3),
                     padding:
                         const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-                    height: expandedRieltor ? 223 : 0,
+                    height: expandedRieltor ? 241 : 0,
                     child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -184,7 +184,7 @@ class _FaqPageState extends State<FaqPage> {
           ),
           AnimatedContainer(
             duration: const Duration(milliseconds: 3),
-            height: expandedInfo ? 300 : 80,
+            height: expandedInfo ? 340 : 80,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -219,7 +219,7 @@ class _FaqPageState extends State<FaqPage> {
                     duration: const Duration(milliseconds: 3),
                     padding:
                         const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-                    height: expandedInfo ? 202 : 0,
+                    height: expandedInfo ? 241 : 0,
                     child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,9 +1,12 @@
 // ignore_for_file: constant_identifier_names
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_house/presentation/bloc/user/user_bloc.dart';
 
+import '../../bloc/auth/auth_bloc.dart';
+import '../../routes/router.gr.dart';
 import '../../widgets/app_drawer.dart';
 
 enum ChangeMode {
@@ -42,7 +45,18 @@ class _UserPageState extends State<UserPage> {
     }
     _formUserKey.currentState!.save();
     if (_changeMode == ChangeMode.Username) {
-    } else {}
+      BlocProvider.of<UserBloc>(context, listen: false).add(
+        UpdateUsernameEvent(
+          _userData['username']!,
+        ),
+      );
+    } else {
+      BlocProvider.of<UserBloc>(context, listen: false).add(
+        UpdatePasswordEvent(
+          _userData['password']!,
+        ),
+      );
+    }
   }
 
   @override
@@ -154,7 +168,11 @@ class _UserPageState extends State<UserPage> {
                             style: TextStyle(fontSize: 16),
                           )),
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            BlocProvider.of<AuthBloc>(context, listen: false)
+                                .add(const LogoutEvent());
+                            context.router.replace(const SplashRoute());
+                          },
                           child: const Text(
                             'Выйти',
                             style: TextStyle(fontSize: 16),

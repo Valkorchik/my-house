@@ -10,3 +10,15 @@ abstract class UserEvent extends Equatable {
 class GetUserEvent extends UserEvent {
   const GetUserEvent();
 }
+
+class UpdateUsernameEvent extends UserEvent {
+  final String username;
+
+  const UpdateUsernameEvent(this.username);
+}
+
+class UpdatePasswordEvent extends UserEvent {
+  final String password;
+
+  const UpdatePasswordEvent(this.password);
+}
