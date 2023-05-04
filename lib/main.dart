@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,19 +6,24 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:my_house/domain/entities/estate.dart';
 
 import 'package:my_house/domain/repositories/auth_repository.dart';
+import 'package:my_house/domain/repositories/user_repostitory.dart';
 import 'package:my_house/presentation/bloc/auth/auth_bloc.dart';
 import 'package:my_house/presentation/bloc/estate/estate_bloc.dart';
+import 'package:my_house/presentation/bloc/user/user_bloc.dart';
 
 import 'package:my_house/presentation/routes/router.gr.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import 'firebase_options.dart';
+
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
+
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const App());
 }
 
@@ -49,6 +55,11 @@ class _AppState extends State<App> {
               EstateList(),
             ),
           ),
+          BlocProvider(
+            create: (context) => UserBloc(
+              UserRepository(),
+            ),
+          )
         ],
         child: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {

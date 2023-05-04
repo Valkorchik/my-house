@@ -30,6 +30,8 @@ dependencies:
   equatable: ^2.0.5
   flutter_bloc: ^8.1.2
   bloc: ^8.1.1
+  firebase_core: ^2.10.0
+  firebase_database: ^10.1.2
 
 dev_dependencies:
   flutter_test:

@@ -8,7 +8,6 @@ import '../../bloc/estate/estate_bloc.dart';
 
 class AdvertsListPage extends StatelessWidget {
   const AdvertsListPage({super.key});
-//TODO: https://pub.dev/packages/drop_down_list Search
   @override
   Widget build(BuildContext context) {
     final estate = context.read<EstateBloc>();

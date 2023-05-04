@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,7 +28,7 @@ class AuthRepository {
   }
 
   Future<void> authenticate(
-      String email, String password, String urlSegment) async {
+      String email, String password, String username, String urlSegment) async {
     Uri url = Uri.parse(
         'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=$apiKey');
 
@@ -48,6 +49,7 @@ class AuthRepository {
       }
       _token = responseData['idToken'];
       _userId = responseData['localId'];
+
       _expiryDate = DateTime.now().add(
         Duration(
           seconds: int.parse(
@@ -68,14 +70,25 @@ class AuthRepository {
     } catch (error) {
       rethrow;
     }
+
+    if (username != "") {
+      DatabaseReference ref = FirebaseDatabase.instance.ref("users/$userId");
+      await ref.set(
+        {
+          'email': email,
+          'username': username,
+          'password': password,
+        },
+      );
+    }
   }
 
   Future<void> login(String email, String password) async {
-    return authenticate(email, password, 'signInWithPassword');
+    return authenticate(email, password, "", 'signInWithPassword');
   }
 
   Future<void> signup(String email, String password, String username) async {
-    return authenticate(email, password, 'signUp');
+    return authenticate(email, password, username, 'signUp');
   }
 
   Future<bool> tryAutoLogin() async {
