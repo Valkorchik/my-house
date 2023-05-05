@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:my_house/domain/entities/estate.dart';
 
 import 'package:my_house/domain/repositories/auth_repository.dart';
+import 'package:my_house/domain/repositories/estate_repository.dart';
 import 'package:my_house/domain/repositories/user_repostitory.dart';
 import 'package:my_house/presentation/bloc/auth/auth_bloc.dart';
 import 'package:my_house/presentation/bloc/estate/estate_bloc.dart';
@@ -52,7 +52,7 @@ class _AppState extends State<App> {
           ),
           BlocProvider(
             create: (context) => EstateBloc(
-              EstateList(),
+              EstateRepository(),
             ),
           ),
           BlocProvider(

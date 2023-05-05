@@ -10,7 +10,7 @@ class AdvertItemDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final estate = context.read<EstateBloc>();
-    final loadedEstate = estate.estateList.findById(itemId);
+    final loadedEstate = estate.estateRepository.findById(itemId);
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -18,11 +18,11 @@ class AdvertItemDetails extends StatelessWidget {
             expandedHeight: 300,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text(loadedEstate.name),
+              title: Text(loadedEstate.name!),
               background: Hero(
                 tag: itemId,
                 child: Image.network(
-                  'https://i.pinimg.com/originals/af/f2/a0/aff2a08c328c7eca482777caa7bab95d.jpg',
+                  loadedEstate.image!,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -47,7 +47,7 @@ class AdvertItemDetails extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   width: double.infinity,
                   child: Text(
-                    loadedEstate.description,
+                    loadedEstate.description!,
                     textAlign: TextAlign.center,
                     softWrap: true,
                   ),

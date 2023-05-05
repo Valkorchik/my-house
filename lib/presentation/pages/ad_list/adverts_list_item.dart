@@ -8,6 +8,7 @@ class AdvertsListItem extends StatelessWidget {
   final String size;
   final String price;
   final String town;
+  final String image;
   const AdvertsListItem({
     super.key,
     required this.name,
@@ -15,6 +16,7 @@ class AdvertsListItem extends StatelessWidget {
     required this.size,
     required this.price,
     required this.id,
+    required this.image,
   });
 
   @override
@@ -34,10 +36,10 @@ class AdvertsListItem extends StatelessWidget {
             },
             child: Hero(
               tag: id,
-              child: const FadeInImage(
-                placeholder: AssetImage('assets/images/image-placeholder.png'),
-                image: NetworkImage(
-                    'https://i.pinimg.com/originals/af/f2/a0/aff2a08c328c7eca482777caa7bab95d.jpg'),
+              child: FadeInImage(
+                placeholder:
+                    const AssetImage('assets/images/image-placeholder.png'),
+                image: NetworkImage(image),
               ),
             ),
           ),
