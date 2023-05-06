@@ -12,3 +12,5 @@ class EstateInitial extends EstateState {}
 class EstateLoading extends EstateState {}
 
 class EstateLoaded extends EstateState {}
+
+class MyEstateLoaded extends EstateState {}

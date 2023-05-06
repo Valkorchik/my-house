@@ -3,14 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/estate/estate_bloc.dart';
 
-class AdvertItemDetails extends StatelessWidget {
+class MyAdvertItemDetails extends StatelessWidget {
   final String itemId;
-  const AdvertItemDetails({super.key, required this.itemId});
+  const MyAdvertItemDetails({super.key, required this.itemId});
 
   @override
   Widget build(BuildContext context) {
     final estate = context.read<EstateBloc>();
-    final loadedEstate = estate.estateRepository.findById(itemId);
+    final loadedEstate = estate.estateRepository.findByIdMy(itemId);
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -52,13 +52,6 @@ class AdvertItemDetails extends StatelessWidget {
                     softWrap: true,
                   ),
                 ),
-                ElevatedButton(
-                    onPressed: () {
-                      estate.add(
-                        BuyEstateEvent(itemId),
-                      );
-                    },
-                    child: const Text("Купить дом")),
                 const SizedBox(
                   height: 700,
                 ),

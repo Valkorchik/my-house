@@ -10,12 +10,28 @@ class EstateBloc extends Bloc<EstateEvent, EstateState> {
 
   EstateBloc(this.estateRepository) : super(EstateInitial()) {
     on<GetEstatesEvent>(_onGetEstates);
+    on<GetMyEventsEvent>(_onGetMyEvents);
+    on<BuyEstateEvent>(_onBuyEvent);
   }
 
   _onGetEstates(event, emit) async {
     emit(EstateLoading());
 
     await estateRepository.getEstate();
+    emit(EstateLoaded());
+  }
+
+  _onGetMyEvents(event, emit) async {
+    emit(EstateLoading());
+
+    await estateRepository.getMyEstates();
+    emit(EstateLoaded());
+  }
+
+  _onBuyEvent(event, emit) async {
+    emit(EstateLoading());
+
+    await estateRepository.buyEstate(event.estateId);
     emit(EstateLoaded());
   }
 }

@@ -8,3 +8,11 @@ abstract class EstateEvent extends Equatable {
 }
 
 class GetEstatesEvent extends EstateEvent {}
+
+class BuyEstateEvent extends EstateEvent {
+  final String estateId;
+
+  const BuyEstateEvent(this.estateId);
+}
+
+class GetMyEventsEvent extends EstateEvent {}

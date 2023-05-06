@@ -1,23 +1,33 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_house/presentation/pages/ad_list/adverts_list_item.dart';
 import 'package:my_house/presentation/routes/router.gr.dart';
 import 'package:my_house/presentation/widgets/app_drawer.dart';
 import '../../bloc/estate/estate_bloc.dart';
+import 'my_adverts_list_item.dart';
 
-class AdvertsListPage extends StatefulWidget {
-  const AdvertsListPage({super.key});
+class MyAdvertsListPage extends StatefulWidget {
+  const MyAdvertsListPage({super.key});
 
   @override
-  State<AdvertsListPage> createState() => _AdvertsListPageState();
+  State<MyAdvertsListPage> createState() => _MyAdvertsListPageState();
 }
 
-class _AdvertsListPageState extends State<AdvertsListPage> {
+class _MyAdvertsListPageState extends State<MyAdvertsListPage> {
   @override
   void initState() {
-    context.read<EstateBloc>().add(GetEstatesEvent());
+    context.read<EstateBloc>().add(GetMyEventsEvent());
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    context
+        .read<EstateBloc>()
+        .estateRepository
+        .clearList; //TODO ДОБАВИТЬ БЛОК ВАТЧЕР КОГДА СТЕЙТ МЕНЯЕТСЯ ЛИСТ ЧИСТИТСЯ
+
+    super.didChangeDependencies();
   }
 
   @override
@@ -25,7 +35,7 @@ class _AdvertsListPageState extends State<AdvertsListPage> {
     final estate = context.read<EstateBloc>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Объявления'),
+        title: const Text('Моя Недвижимость'),
         actions: [
           Padding(
             padding: const EdgeInsets.all(15.0),
@@ -42,16 +52,16 @@ class _AdvertsListPageState extends State<AdvertsListPage> {
           if (state is EstateLoaded) {
             return ListView.builder(
               itemBuilder: (ctx, index) {
-                return AdvertsListItem(
-                  id: estate.estateRepository.items[index].id!,
-                  name: estate.estateRepository.items[index].name!,
-                  price: estate.estateRepository.items[index].price!,
-                  size: estate.estateRepository.items[index].size!,
-                  town: estate.estateRepository.items[index].town!,
-                  image: estate.estateRepository.items[index].image!,
+                return MyAdvertsListItem(
+                  id: estate.estateRepository.itemsMy[index].id!,
+                  name: estate.estateRepository.itemsMy[index].name!,
+                  price: estate.estateRepository.itemsMy[index].price!,
+                  size: estate.estateRepository.itemsMy[index].size!,
+                  town: estate.estateRepository.itemsMy[index].town!,
+                  image: estate.estateRepository.itemsMy[index].image!,
                 );
               },
-              itemCount: estate.estateRepository.items.length,
+              itemCount: estate.estateRepository.itemsMy.length,
             );
           }
           return const Center(child: CircularProgressIndicator());

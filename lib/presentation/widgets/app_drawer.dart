@@ -32,7 +32,9 @@ class AppDrawer extends StatelessWidget {
                 color: Colors.grey.shade500,
               ),
               TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.router.replace(const MyAdvertsListRoute());
+                  },
                   child: const Text(
                     'Моя недвижимость',
                     style: TextStyle(fontWeight: FontWeight.bold),
