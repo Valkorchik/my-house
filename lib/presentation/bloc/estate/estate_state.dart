@@ -14,3 +14,7 @@ class EstateLoading extends EstateState {}
 class EstateLoaded extends EstateState {}
 
 class MyEstateLoaded extends EstateState {}
+
+class ClearList extends EstateBloc {
+  ClearList(super.estateRepository);
+}

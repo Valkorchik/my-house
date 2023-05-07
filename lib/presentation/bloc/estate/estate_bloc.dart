@@ -12,6 +12,7 @@ class EstateBloc extends Bloc<EstateEvent, EstateState> {
     on<GetEstatesEvent>(_onGetEstates);
     on<GetMyEventsEvent>(_onGetMyEvents);
     on<BuyEstateEvent>(_onBuyEvent);
+    on<ClearListEvent>(_onClearList);
   }
 
   _onGetEstates(event, emit) async {
@@ -33,5 +34,10 @@ class EstateBloc extends Bloc<EstateEvent, EstateState> {
 
     await estateRepository.buyEstate(event.estateId);
     emit(EstateLoaded());
+  }
+
+  _onClearList(event, emit) async {
+    emit(ClearList(estateRepository));
+    estateRepository.clearList();
   }
 }

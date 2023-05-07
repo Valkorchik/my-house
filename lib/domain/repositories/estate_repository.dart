@@ -22,6 +22,7 @@ class EstateRepository {
   });
 
   Future<void> getEstate() async {
+    if (_items.isNotEmpty) return;
     for (int i = 0; i < 8; i++) {
       final ref = FirebaseDatabase.instance.ref();
       final townSnapshot = await ref.child('estates/$i/town').get();
@@ -60,6 +61,7 @@ class EstateRepository {
     if (_items.isEmpty) {
       await getEstate();
     }
+    if (_itemsMy.isNotEmpty) return;
     for (int i = 0; i < _items.length; i++) {
       if (_items[i].isRequsted == true) {
         _itemsMy.add(EstateRepository(

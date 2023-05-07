@@ -16,3 +16,5 @@ class BuyEstateEvent extends EstateEvent {
 }
 
 class GetMyEventsEvent extends EstateEvent {}
+
+class ClearListEvent extends EstateEvent {}

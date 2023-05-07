@@ -32,7 +32,7 @@ class MyAdvertsListItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           child: GestureDetector(
             onTap: () {
-              context.router.push(AdvertItemDetails(itemId: id));
+              context.router.push(MyAdvertItemDetails(itemId: id));
             },
             child: Hero(
               tag: id,

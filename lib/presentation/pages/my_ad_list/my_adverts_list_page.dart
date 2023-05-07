@@ -16,18 +16,8 @@ class MyAdvertsListPage extends StatefulWidget {
 class _MyAdvertsListPageState extends State<MyAdvertsListPage> {
   @override
   void initState() {
-    context.read<EstateBloc>().add(GetMyEventsEvent());
+    BlocProvider.of<EstateBloc>(context, listen: false).add(GetMyEventsEvent());
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    context
-        .read<EstateBloc>()
-        .estateRepository
-        .clearList; //TODO ДОБАВИТЬ БЛОК ВАТЧЕР КОГДА СТЕЙТ МЕНЯЕТСЯ ЛИСТ ЧИСТИТСЯ
-
-    super.didChangeDependencies();
   }
 
   @override
